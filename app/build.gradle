@@ -1,0 +1,67 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 16
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        applicationId "com.parrot.freeflight"
+        minSdkVersion 8
+        targetSdkVersion 16
+
+        ndk {
+            moduleName "adfreeflight"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            // TODO proguard-rules seem outdated and useless cause it's only Android stuff
+        }
+    }
+    sourceSets.main {
+        jni.srcDirs = [] // This prevents the auto generation of Android.mk
+        jniLibs.srcDir 'src/main/jniLibs'
+        // This is not necessary unless you have precompiled libraries in your project.
+    }
+
+    task buildNative(type: Exec, description: 'Compile JNI source via NDK') {
+        def ndkCommand = "${android.ndkDirectory}/ndk-build"
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            ndkCommand += ".cmd"
+        }
+
+        commandLine ndkCommand,
+                '-C', file('src/main/jni').absolutePath,
+                '-j', Runtime.runtime.availableProcessors(),
+                'all',
+                'NDK_DEBUG=1'
+    }
+
+    task cleanNative(type: Exec, description: 'Clean JNI object files') {
+        def ndkCommand = "${android.ndkDirectory}/ndk-build"
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            ndkCommand += ".cmd"
+        }
+
+        commandLine ndkCommand,
+                '-C', file('src/main/jni').absolutePath,
+                'clean'
+    }
+
+    clean.dependsOn 'cleanNative'
+
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn buildNative
+    }
+}
+
+dependencies {
+    compile files('libs/android-support-v13.jar')
+    compile files('libs/com.sony.rdis.receiver-20111206.jar')
+    compile files('libs/com.sony.rdis.receiver.utility-20111206.jar')
+}
