@@ -39,7 +39,7 @@ ifneq ($(FFMPEG_ARCHIVE_ROOTDIR), ffmpeg/)
 	$(SILENT_MAKE)mv $(FFMPEG_ARCHIVE_ROOTDIR)* ffmpeg/
 	$(SILENT_MAKE)rm -rf $(FFMPEG_ARCHIVE_ROOTDIR)
 endif
-	$(SILENT_MAKE)tar xzf parrot_ffmpeg_build_utils.tar.gz
+	$(SILENT_MAKE)cp -r parrot-ffmpeg-build-utils/* ffmpeg/
 	$(SILENT_MAKE)echo "Done"
 endif
 endif
