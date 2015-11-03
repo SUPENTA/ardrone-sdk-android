@@ -26,27 +26,30 @@ function build_target #TARGETNAME
 			if [ -z $ANDROID_NDK_PATH ]; then
 				echo "You must fill the ANDROID_NDK_PATH variable with the path to your Android NDK"
 			else
+				# TODO check existence of $ANDROID_TARGET_VERSION
+				# TODO abstract the version of arm-linux-androideabi
+				# TODO abstract the type of architecture (x86, x86_64)
 				NDK_ROOT=$ANDROID_NDK_PATH
-				MY_SYSROOT="$NDK_ROOT/platforms/android-8/arch-arm"
-		MY_CC="$NDK_ROOT/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/arm-linux-androideabi-gcc --sysroot=$MY_SYSROOT"
-		MY_AR="$NDK_ROOT/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/arm-linux-androideabi-ar"
-		MY_CROSS_PREFIX="$NDK_ROOT/toolchains/arm-linux-androideabi-4.6/prebuilt/linux-x86/bin/arm-linux-androideabi-"
-		COMMON_CONFIGURE_OPTIONS="--cc=\"$MY_CC\" --enable-cross-compile --target_os=linux --sysroot=$MY_SYSROOT --cross_prefix=\"$MY_CROSS_PREFIX\" $FFMPEG_SHARED --nm=nm"
-		build_shared_architecture armv7 " --arch=armv7 --cpu=cortex-a8 --enable-pic --disable-neon --enable-armvfp"
-		build_shared_architecture armv6 " --arch=armv6 --cpu=arm1136j-s --disable-pic --disable-neon --enable-armvfp"
-		make_shared_binary_from armv7
-		make_shared_binary_from armv6
-	    fi
-	    ;;
-	android_gtv)
-		NDK_ROOT="/home/dbarysk/dev/sdk/android-ndk-r7c"
-		MY_SYSROOT="$NDK_ROOT/toolchain/sysroot"
-		MY_CC="$NDK_ROOT/toolchain/bin/arm-linux-androideabi-gcc --sysroot=$MY_SYSROOT"
-		MY_AR="$NDK_ROOT/toolchain/bin/arm-linux-androideabi-ar"
-		MY_CROSS_PREFIX="$NDK_ROOT/toolchain/bin/arm-linux-androideabi-"
+				MY_SYSROOT="$NDK_ROOT/platforms/android-$ANDROID_TARGET_VERSION/arch-arm"
+				MY_CC="$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc --sysroot=$MY_SYSROOT"
+				MY_AR="$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ar"
+				MY_CROSS_PREFIX="$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-"
 				COMMON_CONFIGURE_OPTIONS="--cc=\"$MY_CC\" --enable-cross-compile --target_os=linux --sysroot=$MY_SYSROOT --cross_prefix=\"$MY_CROSS_PREFIX\" $FFMPEG_SHARED --nm=nm"
 				build_shared_architecture armv7 " --arch=armv7 --cpu=cortex-a8 --enable-pic --disable-neon --enable-armvfp"
+				build_shared_architecture armv6 " --arch=armv6 --cpu=arm1136j-s --disable-pic --disable-neon --enable-armvfp"
 				make_shared_binary_from armv7
+				make_shared_binary_from armv6
+	    	fi
+	    	;;
+		android_gtv)
+			NDK_ROOT="/home/dbarysk/dev/sdk/android-ndk-r7c"
+			MY_SYSROOT="$NDK_ROOT/toolchain/sysroot"
+			MY_CC="$NDK_ROOT/toolchain/bin/arm-linux-androideabi-gcc --sysroot=$MY_SYSROOT"
+			MY_AR="$NDK_ROOT/toolchain/bin/arm-linux-androideabi-ar"
+			MY_CROSS_PREFIX="$NDK_ROOT/toolchain/bin/arm-linux-androideabi-"
+					COMMON_CONFIGURE_OPTIONS="--cc=\"$MY_CC\" --enable-cross-compile --target_os=linux --sysroot=$MY_SYSROOT --cross_prefix=\"$MY_CROSS_PREFIX\" $FFMPEG_SHARED --nm=nm"
+					build_shared_architecture armv7 " --arch=armv7 --cpu=cortex-a8 --enable-pic --disable-neon --enable-armvfp"
+					make_shared_binary_from armv7
 			;;
 		host| \
 			pc|PC|Pc| \
