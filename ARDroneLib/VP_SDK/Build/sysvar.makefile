@@ -88,7 +88,8 @@ else
 	else
 	     OS_TARGET_ID=$(shell uname -sor | sed -e "s/[ \/]/_/g")
         ifeq ($(USE_ANDROID),yes)
-          TOOLCHAIN_PATH=$(NDK_PATH)/toolchains/$(TOOLCHAIN_VERSION)/prebuilt/linux-x86/bin
+          # TODO check existence of $NDK_PATH, $TOOLCHAIN_VERSION and $TOOLCHAIN_ARCH
+          TOOLCHAIN_PATH=$(NDK_PATH)/toolchains/$(TOOLCHAIN_VERSION)/prebuilt/$(TOOLCHAIN_ARCH)/bin
           GENERIC_COMMAND_PREFIX=$(TOOLCHAIN_PATH)/arm-linux-androideabi-
         else
 	TOOLCHAIN_PATH=$(shell which gcc | sed "s:/gcc::")
