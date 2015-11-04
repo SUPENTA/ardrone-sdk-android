@@ -1,23 +1,53 @@
 LOCAL_PATH := $(call my-dir)
 
+### Parrot static libraries
 include $(CLEAR_VARS)
 LOCAL_MODULE    := sdk 
-LOCAL_SRC_FILES := libsdk.a
-
+LOCAL_SRC_FILES := $(ARDRONE_SDK_PATH)/Soft/Build/targets_versions/sdk_$(ARDRONE_TARGET_BUILD)_$(ARDRONE_TARGET_OS)_$(GCC)/libsdk.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
-
 LOCAL_MODULE    := pc_ardrone 
-LOCAL_SRC_FILES := libpc_ardrone.a
-
+LOCAL_SRC_FILES := $(ARDRONE_SDK_PATH)/Soft/Build/targets_versions/ardrone_lib_$(ARDRONE_TARGET_BUILD)_$(ARDRONE_TARGET_OS)_$(GCC)/libpc_ardrone.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE    := vlib 
-LOCAL_SRC_FILES := libvlib.a
-
+LOCAL_SRC_FILES := $(ARDRONE_SDK_PATH)/Soft/Build/targets_versions/vlib_$(ARDRONE_TARGET_BUILD)_$(ARDRONE_TARGET_OS)_$(GCC)/libvlib.a
 include $(PREBUILT_STATIC_LIBRARY)
+
+### FFMPEG shared libraries
+include $(CLEAR_VARS)
+LOCAL_MODULE := AVCODEC-prebuilt
+LOCAL_SRC_FILES := $(ARDRONE_SDK_PATH)/Soft/Build/targets_versions/ffmpeg_armv7_$(ARDRONE_TARGET_BUILD)_$(ARDRONE_TARGET_OS)_$(GCC)/libavcodec.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := AVUTIL-prebuilt
+LOCAL_SRC_FILES := $(ARDRONE_SDK_PATH)/Soft/Build/targets_versions/ffmpeg_armv7_$(ARDRONE_TARGET_BUILD)_$(ARDRONE_TARGET_OS)_$(GCC)/libavutil.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := SWSCALE-prebuilt
+LOCAL_SRC_FILES := $(ARDRONE_SDK_PATH)/Soft/Build/targets_versions/ffmpeg_armv7_$(ARDRONE_TARGET_BUILD)_$(ARDRONE_TARGET_OS)_$(GCC)/libswscale.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := AVFILTER-prebuilt
+LOCAL_SRC_FILES := $(ARDRONE_SDK_PATH)/Soft/Build/targets_versions/ffmpeg_armv7_$(ARDRONE_TARGET_BUILD)_$(ARDRONE_TARGET_OS)_$(GCC)/libavfilter.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := AVFORMAT-prebuilt
+LOCAL_SRC_FILES := $(ARDRONE_SDK_PATH)/Soft/Build/targets_versions/ffmpeg_armv7_$(ARDRONE_TARGET_BUILD)_$(ARDRONE_TARGET_OS)_$(GCC)/libavformat.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := AVDEVICE-prebuilt
+LOCAL_SRC_FILES := $(ARDRONE_SDK_PATH)/Soft/Build/targets_versions/ffmpeg_armv7_$(ARDRONE_TARGET_BUILD)_$(ARDRONE_TARGET_OS)_$(GCC)/libavdevice.so
+include $(PREBUILT_SHARED_LIBRARY)
+
+### Real work for adfreeflight module
 
 include $(CLEAR_VARS)  
 
@@ -35,7 +65,7 @@ LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/VP_SDK/VP_Com/linux
 
 LOCAL_C_INCLUDES:=	$(LOCAL_PATH)/../ITTIAM/avc_decoder/includes \
 					$(LOCAL_PATH)/../ITTIAM/m4v_decoder/includes \
-					$(LOCAL_PATH)/../FFMPEG/Includes
+					$(ARDRONE_SDK_PATH)/../FFMPEG/Includes
 #LIB_PATH=$(LOCAL_PATH)/../../libs/armeabi
 
 LOCAL_LDLIBS := -llog -lGLESv2 -ljnigraphics
