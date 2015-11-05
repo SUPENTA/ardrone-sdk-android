@@ -1,0 +1,5 @@
+# ALL the files in jni/ and jniLibs/ are important (even *.a and *.so)
+!jni/**/*.a
+!jni/**/*.so
+!jniLibs/**/*.a
+!jniLibs/**/*.so
