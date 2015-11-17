@@ -1,0 +1,57 @@
+### 1. Build FFMPEG
+Run in ARDroneLib/FFMPEG:
+`make android_no_neon RELEASE_BUILD=yes NDK_PLATFORM_VERSION=android-21 TOOLCHAIN_VERSION=arm-linux-androideabi-4.8 TOOLCHAIN_ARCH=linux-x86_64`
+
+Compilation is super slow (several minutes)!
+
+This will create:
+- a folder ARDroneLib/FFMPEG/ffmpeg
+- a folder ARDroneLib/FFMPEG/Includes
+- a folder ARDroneLib/Soft/Build/targets_versions/ffmpeg_armv7_BLAH
+- a folder ARDroneLib/Soft/Build/targets_versions/ffmpeg_armv6_BLAH
+- a folder ARDroneLib/Soft/Build/targets_versions/ffmpeg_android_no_neon_BLAH
+
+(BLAH depends on your local path and build environment, for instance "DEBUG_MODE_Linux_3.19.0-30-generic_GNU_Linux_homedavidAndroidDeveloperToolssdkndk-bundletoolchainsarm-linux-androideabi-4.9prebuiltlinux-x86_64binarm-linux-androideabi-gcc_4.9")
+
+
+
+### 2. Build the Drone lib
+Run in ARDroneLib/Soft/Build:
+`make USE_ANDROID=yes RELEASE_BUILD=yes NDK_PLATFORM_VERSION=android-21 TOOLCHAIN_VERSION=arm-linux-androideabi-4.8 TOOLCHAIN_ARCH=linux-x86_64`
+
+Compilation is much faster than ffmpeg.
+
+This will create:
+- a folder ARDroneLib/Soft/Build/targets_versions/sdk_BLAH
+- a folder ARDroneLib/Soft/Build/targets_versions/vlib_BLAH
+- a folder ARDroneLib/Soft/Build/targets_versions/ardrone_lib_BLAH
+
+(BLAH is same as before)
+
+
+
+### 3. Copy the outputs in the Android app
+We need to copy:
+- all *.h files in ARDroneLib/FFMPEG/Includes into app/src/jni/FFMPEG/Includes (or jniLibs/FFMPEG)
+
+- libsdk.a from ARDroneLib/Soft/Build/targets_versions/sdk_BLAH to app/src/jniLibs/API (or jni/API)
+- libpc_ardrone.a from ARDroneLib/Soft/Build/targets_versions/ardrone_lib_BLAH to app/src/jniLibs/API (or jni/API)
+- libvlib.a from ARDroneLib/Soft/Build/targets_versions/vlib_BLAH to app/src/jniLibs/API (or jni/API)
+
+- all *.so files from ARDroneLib/Soft/Build/targets_versions/ffmpeg_armv6_BLAH into app/src/jniLibs/FFMPEG/armeabi
+- all *.so files from ARDroneLib/Soft/Build/targets_versions/ffmpeg_armv7_BLAH into app/src/jniLibs/FFMPEG/armeabi-v7a
+
+- fix version number / synlinks in app/src/jniLibs/FFMPEG/armeabi-v7a with the script app/src/main/jni/FFMPEG/fixVersionsNumbers.bash
+
+# TODO reference libs and includes directly!
+# TODO solve the version number problem other than with an extra script (gradle smart copy task)
+
+------------
+
+# TODO: Check dependencies?
+Before FFMPEG?
+Before Drone lib?
+
+# TODO: Distinguish debug and release
+# TODO: Test without env variable (we should use Gradle local.properties)
+# TODO: Test in Windows environment (lol)
