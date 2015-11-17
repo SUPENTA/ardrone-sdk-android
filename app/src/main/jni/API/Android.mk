@@ -21,21 +21,21 @@ include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)  
 
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/Soft/Common
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/Soft/Lib
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/VLIB
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/VLIB/Platform/arm9
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/VP_SDK
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/VP_SDK/VP_Com/linux
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/VP_SDK/VP_Com
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/VP_SDK/VP_Os
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/VP_SDK/VP_Os/linux
-LOCAL_CFLAGS += -I$(ARDRONE_SDK_PATH)/VP_SDK/VP_Com/linux
-
 LOCAL_C_INCLUDES:=	$(LOCAL_PATH)/../ITTIAM/avc_decoder/includes \
 					$(LOCAL_PATH)/../ITTIAM/m4v_decoder/includes \
-					$(LOCAL_PATH)/../FFMPEG/Includes
+					$(LOCAL_PATH)/../FFMPEG/Includes \
+					$(LOCAL_PATH)/Includes \
+                    $(LOCAL_PATH)/Includes/Soft/Common \
+                    $(LOCAL_PATH)/Includes/Soft/Lib \
+                    $(LOCAL_PATH)/Includes/VLIB \
+                    $(LOCAL_PATH)/Includes/VLIB/Platform/arm9 \
+                    $(LOCAL_PATH)/Includes/VP_SDK \
+                    $(LOCAL_PATH)/Includes/VP_SDK/VP_Com/linux \
+                    $(LOCAL_PATH)/Includes/VP_SDK/VP_Com \
+                    $(LOCAL_PATH)/Includes/VP_SDK/VP_Os \
+                    $(LOCAL_PATH)/Includes/VP_SDK/VP_Os/linux \
+                    $(LOCAL_PATH)/Includes/VP_SDK/VP_Com/linux \
+
 #LIB_PATH=$(LOCAL_PATH)/../../libs/armeabi
 
 LOCAL_LDLIBS := -llog -lGLESv2 -ljnigraphics
