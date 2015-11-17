@@ -3,3 +3,7 @@
 !jni/**/*.so
 !jniLibs/**/*.a
 !jniLibs/**/*.so
+
+# Build system will generate the content of these folders: http://developer.android.com/ndk/guides/prebuilts.html
+libs/
+obj/
